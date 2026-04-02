@@ -137,18 +137,33 @@ export default function App() {
 
     try {
       const element = pdfRef.current;
+      
+      // @ts-ignore
+      const h2p = typeof html2pdf === 'function' ? html2pdf : (window as any).html2pdf;
+      
+      if (!h2p) {
+        throw new Error('Library PDF tidak termuat. Silakan muat ulang halaman.');
+      }
+
       const opt = {
-        margin: 20,
+        margin: 10,
         filename: `Artikel_${new Date().getTime()}.pdf`,
-        image: { type: 'jpeg' as const, quality: 1 },
-        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 2, 
+          useCORS: true, 
+          letterRendering: true,
+          logging: false
+        },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
       };
 
-      await html2pdf().set(opt).from(element).save();
-    } catch (err) {
+      await h2p().from(element).set(opt).save();
+    } catch (err: any) {
       console.error('Failed to export PDF', err);
+      setError(err.message || 'Gagal mengekspor PDF. Silakan coba lagi.');
+      setStatus('error');
     } finally {
       setIsExportingPdf(false);
     }
@@ -498,7 +513,16 @@ export default function App() {
       </AnimatePresence>
 
       {/* Hidden PDF Export Container (Off-screen instead of hidden for html2pdf) */}
-      <div className="absolute -left-[9999px] top-0 pointer-events-none">
+      <div 
+        style={{ 
+          position: 'fixed', 
+          left: '-9999px', 
+          top: '0', 
+          width: '210mm',
+          backgroundColor: 'white',
+          zIndex: -100
+        }}
+      >
         <div ref={pdfRef} className="p-10 bg-white text-black font-serif" style={{ width: '210mm' }}>
           <div className="prose prose-slate prose-lg max-w-none">
             <ReactMarkdown>{result}</ReactMarkdown>
