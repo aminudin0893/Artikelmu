@@ -1,0 +1,108 @@
+export interface WritingStyle {
+  id: string;
+  category: 'Jurnalistik' | 'Esai' | 'Khusus';
+  name: string;
+  desc: string;
+  prompt: string;
+}
+
+export const WRITING_STYLES: WritingStyle[] = [
+  {
+    id: 'formal',
+    category: 'Jurnalistik',
+    name: 'Jurnalistik Formal',
+    desc: 'Objektif, lugas, sesuai kaidah 5W+1H.',
+    prompt: 'Anda adalah seorang jurnalis senior. Tuliskan berita formal, objektif, berimbang (5W+1H). Gunakan bahasa Indonesia baku.',
+  },
+  {
+    id: 'santai',
+    category: 'Jurnalistik',
+    name: 'Gaya Santai / Blog',
+    desc: 'Bahasa kasual, seperti bercerita.',
+    prompt: 'Anda adalah penulis blog. Tuliskan artikel dengan gaya santai, kasual, bahasa sehari-hari yang mudah dicerna.',
+  },
+  {
+    id: 'sensasional',
+    category: 'Jurnalistik',
+    name: 'Sensasional / Clickbait',
+    desc: 'Judul hiperbolis & memancing emosi.',
+    prompt: 'Anda adalah penulis portal viral. Tuliskan berita sangat sensasional, hiperbolis, dramatis. Buat judul clickbait.',
+  },
+  {
+    id: 'investigatif',
+    category: 'Jurnalistik',
+    name: 'Laporan Investigatif',
+    desc: 'Mendalam, mengungkap fakta.',
+    prompt: 'Anda adalah jurnalis investigasi. Tuliskan laporan mendalam yang mengungkap fakta tersembunyi. Nada serius & analitis.',
+  },
+  {
+    id: 'esai_argumentatif',
+    category: 'Esai',
+    name: 'Esai Argumentatif',
+    desc: 'Meyakinkan pembaca dengan logika.',
+    prompt: 'Anda adalah penulis esai kritis. Tuliskan esai argumentatif. Bangun argumen kuat dan logis untuk meyakinkan pembaca.',
+  },
+  {
+    id: 'esai_deskriptif',
+    category: 'Esai',
+    name: 'Esai Deskriptif',
+    desc: 'Menggambarkan detail panca indera.',
+    prompt: 'Anda adalah penulis sastra. Tuliskan esai deskriptif. Fokus pada penggambaran detail, suasana, melibatkan panca indera.',
+  },
+  {
+    id: 'esai_ekspositori',
+    category: 'Esai',
+    name: 'Esai Ekspositori',
+    desc: 'Menjelaskan informasi objektif.',
+    prompt: 'Anda adalah pendidik. Tuliskan esai ekspositori. Jelaskan informasi secara objektif tanpa opini pribadi. Struktur jelas.',
+  },
+  {
+    id: 'esai_naratif',
+    category: 'Esai',
+    name: 'Esai Naratif',
+    desc: 'Menceritakan fakta dalam bentuk cerita.',
+    prompt: 'Anda adalah pencerita. Tuliskan esai naratif. Rangkai fakta menjadi cerita mengalir dengan alur layaknya cerpen nyata.',
+  },
+  {
+    id: 'akademisi',
+    category: 'Esai',
+    name: 'Jurnal Akademisi',
+    desc: 'Sangat formal, analitis, ilmiah.',
+    prompt: 'Anda adalah akademisi. Tuliskan teks bergaya jurnal ilmiah. Kosakata kompleks, objektif, analitis, argumen terstruktur.',
+  },
+  {
+    id: 'satir',
+    category: 'Khusus',
+    name: 'Satir / Parodi',
+    desc: 'Sindiran halus, ironi, komedi gelap.',
+    prompt: 'Anda adalah penulis satir. Tuliskan tulisan satir penuh sindiran halus dan komedi gelap. Terdengar serius tapi menyindir.',
+  },
+  {
+    id: 'human_interest',
+    category: 'Khusus',
+    name: 'Human Interest',
+    desc: 'Fokus emosional & kemanusiaan.',
+    prompt: 'Anda adalah jurnalis feature. Tuliskan tulisan fokus sisi emosional, perjuangan manusia. Bahasa naratif dan menyentuh hati.',
+  },
+  {
+    id: 'opini',
+    category: 'Khusus',
+    name: 'Opini / Tajuk Rencana',
+    desc: 'Pandangan subjektif redaksi.',
+    prompt: 'Anda adalah redaktur senior. Tuliskan artikel opini/tajuk rencana. Berikan pandangan subjektif dan argumen kuat.',
+  },
+  {
+    id: 'olahraga',
+    category: 'Khusus',
+    name: 'Komentator Olahraga',
+    desc: 'Enerjik, cepat, penuh semangat.',
+    prompt: 'Anda adalah jurnalis olahraga. Tuliskan dengan gaya komentator: enerjik, dramatis, cepat, penuh istilah kompetitif.',
+  },
+  {
+    id: 'edukasi',
+    category: 'Khusus',
+    name: 'Edukasi / Pembelajaran',
+    desc: 'Informatif, layaknya guru.',
+    prompt: 'Anda adalah pendidik. Tuliskan artikel edukasi. Jelaskan konsep dengan jelas, runut, mudah dipahami layaknya mengajar.',
+  },
+];
