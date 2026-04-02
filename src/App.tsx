@@ -4,6 +4,9 @@ import ReactMarkdown from 'react-markdown';
 import { 
   Pen, 
   AlignLeft, 
+  AlignCenter,
+  AlignRight,
+  AlignJustify,
   ListOrdered, 
   Folders, 
   Palette, 
@@ -25,8 +28,6 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { WRITING_STYLES, type WritingStyle } from './constants';
 import { cn } from './lib/utils';
-// @ts-ignore
-import html2pdf from 'html2pdf.js';
 
 export default function App() {
   const [topic, setTopic] = useState('');
@@ -46,10 +47,9 @@ export default function App() {
   const [result, setResult] = useState('');
   const [error, setError] = useState('');
   const [isCopied, setIsCopied] = useState(false);
-  const [isExportingPdf, setIsExportingPdf] = useState(false);
+  const [textAlign, setTextAlign] = useState<'left' | 'center' | 'right' | 'justify'>('left');
 
   const resultRef = useRef<HTMLDivElement>(null);
-  const pdfRef = useRef<HTMLDivElement>(null);
 
   const filteredStyles = WRITING_STYLES.filter(s => s.category === category);
 
@@ -135,37 +135,6 @@ export default function App() {
   const handlePrint = () => {
     if (!result) return;
     window.print();
-  };
-
-  const handleExportPdf = async () => {
-    const element = document.getElementById('root');
-    if (!element) return;
-    setIsExportingPdf(true);
-
-    try {
-      // @ts-ignore
-      const h2p = typeof html2pdf === 'function' ? html2pdf : (window as any).html2pdf;
-      
-      if (!h2p) {
-        throw new Error('Library PDF tidak termuat. Silakan muat ulang halaman.');
-      }
-
-      const opt = {
-        margin: 10,
-        filename: 'generated_article.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-
-      await h2p().from(element).set(opt).save();
-    } catch (err: any) {
-      console.error('Failed to export PDF', err);
-      setError(err.message || 'Gagal mengekspor PDF.');
-      setStatus('error');
-    } finally {
-      setIsExportingPdf(false);
-    }
   };
 
   const pasteApiKey = async () => {
@@ -350,30 +319,68 @@ export default function App() {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 20 }}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-4"
                     >
-                      <button 
-                        onClick={handleCopy}
-                        className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-all shadow-sm"
-                      >
-                        {isCopied ? <CheckCircle size={18} className="text-green-600" /> : <Copy size={18} />}
-                        <span className={isCopied ? "text-green-600" : ""}>{isCopied ? 'Tersalin' : 'Salin'}</span>
-                      </button>
-                      <button 
-                        onClick={handlePrint}
-                        className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-all shadow-sm"
-                      >
-                        <Printer size={18} />
-                        <span>Cetak</span>
-                      </button>
-                      <button 
-                        onClick={handleExportPdf}
-                        disabled={isExportingPdf}
-                        className="flex items-center gap-2 px-3 py-2 bg-indigo-50 border border-indigo-100 rounded-lg text-sm font-medium text-indigo-700 hover:bg-indigo-600 hover:text-white transition-all shadow-sm disabled:opacity-50"
-                      >
-                        {isExportingPdf ? <Loader2 size={18} className="animate-spin" /> : <FileText size={18} />}
-                        <span>{isExportingPdf ? 'Memproses...' : 'Simpan PDF'}</span>
-                      </button>
+                      {/* Alignment Controls */}
+                      <div className="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200">
+                        <button 
+                          onClick={() => setTextAlign('left')}
+                          className={cn(
+                            "p-1.5 rounded-md transition-all",
+                            textAlign === 'left' ? "bg-white text-indigo-600 shadow-sm" : "text-slate-400 hover:text-slate-600"
+                          )}
+                          title="Rata Kiri"
+                        >
+                          <AlignLeft size={16} />
+                        </button>
+                        <button 
+                          onClick={() => setTextAlign('center')}
+                          className={cn(
+                            "p-1.5 rounded-md transition-all",
+                            textAlign === 'center' ? "bg-white text-indigo-600 shadow-sm" : "text-slate-400 hover:text-slate-600"
+                          )}
+                          title="Rata Tengah"
+                        >
+                          <AlignCenter size={16} />
+                        </button>
+                        <button 
+                          onClick={() => setTextAlign('right')}
+                          className={cn(
+                            "p-1.5 rounded-md transition-all",
+                            textAlign === 'right' ? "bg-white text-indigo-600 shadow-sm" : "text-slate-400 hover:text-slate-600"
+                          )}
+                          title="Rata Kanan"
+                        >
+                          <AlignRight size={16} />
+                        </button>
+                        <button 
+                          onClick={() => setTextAlign('justify')}
+                          className={cn(
+                            "p-1.5 rounded-md transition-all",
+                            textAlign === 'justify' ? "bg-white text-indigo-600 shadow-sm" : "text-slate-400 hover:text-slate-600"
+                          )}
+                          title="Rata Kiri Kanan"
+                        >
+                          <AlignJustify size={16} />
+                        </button>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <button 
+                          onClick={handleCopy}
+                          className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-all shadow-sm"
+                        >
+                          {isCopied ? <CheckCircle size={18} className="text-green-600" /> : <Copy size={18} />}
+                          <span className={isCopied ? "text-green-600" : ""}>{isCopied ? 'Tersalin' : 'Salin'}</span>
+                        </button>
+                        <button 
+                          onClick={handlePrint}
+                          className="flex items-center gap-2 px-3 py-2 bg-indigo-50 border border-indigo-100 rounded-lg text-sm font-medium text-indigo-700 hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
+                        >
+                          <Printer size={18} />
+                          <span>Cetak</span>
+                        </button>
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -434,7 +441,11 @@ export default function App() {
 
                 {/* Result Content */}
                 {status === 'success' && (
-                  <div ref={resultRef} className="font-serif prose prose-slate prose-lg max-w-none text-slate-800">
+                  <div 
+                    ref={resultRef} 
+                    className="font-serif prose prose-slate prose-lg max-w-none text-slate-800"
+                    style={{ textAlign: textAlign }}
+                  >
                     <ReactMarkdown>{result}</ReactMarkdown>
                   </div>
                 )}
