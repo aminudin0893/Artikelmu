@@ -32,7 +32,12 @@ export default function App() {
   const [paragraphs, setParagraphs] = useState(4);
   const [category, setCategory] = useState<WritingStyle['category']>('Jurnalistik');
   const [selectedStyleId, setSelectedStyleId] = useState('formal');
-  const [apiKey, setApiKey] = useState('');
+  const [apiKey, setApiKey] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('gemini_api_key') || '';
+    }
+    return '';
+  });
   const [showApiKey, setShowApiKey] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   
@@ -52,6 +57,10 @@ export default function App() {
       setSelectedStyleId(filteredStyles[0].id);
     }
   }, [category]);
+
+  useEffect(() => {
+    localStorage.setItem('gemini_api_key', apiKey);
+  }, [apiKey]);
 
   const handleGenerate = async () => {
     if (!topic.trim()) return;
