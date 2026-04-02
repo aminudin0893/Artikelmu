@@ -19,7 +19,8 @@ import {
   EyeOff,
   Clipboard,
   Loader2,
-  RefreshCw
+  RefreshCw,
+  Printer
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { WRITING_STYLES, type WritingStyle } from './constants';
@@ -131,13 +132,17 @@ export default function App() {
     }
   };
 
+  const handlePrint = () => {
+    if (!result) return;
+    window.print();
+  };
+
   const handleExportPdf = async () => {
-    if (!result || !pdfRef.current) return;
+    const element = document.getElementById('root');
+    if (!element) return;
     setIsExportingPdf(true);
 
     try {
-      const element = pdfRef.current;
-      
       // @ts-ignore
       const h2p = typeof html2pdf === 'function' ? html2pdf : (window as any).html2pdf;
       
@@ -147,22 +152,16 @@ export default function App() {
 
       const opt = {
         margin: 10,
-        filename: `Artikel_${new Date().getTime()}.pdf`,
+        filename: 'generated_article.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { 
-          scale: 2, 
-          useCORS: true, 
-          letterRendering: true,
-          logging: false
-        },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
       await h2p().from(element).set(opt).save();
     } catch (err: any) {
       console.error('Failed to export PDF', err);
-      setError(err.message || 'Gagal mengekspor PDF. Silakan coba lagi.');
+      setError(err.message || 'Gagal mengekspor PDF.');
       setStatus('error');
     } finally {
       setIsExportingPdf(false);
@@ -235,7 +234,8 @@ export default function App() {
                       <input 
                         type="number" 
                         value={paragraphs}
-                        onChange={(e) => setParagraphs(parseInt(e.target.value) || 1)}
+                        onChange={(e) => setParagraphs(parseInt(e.target.value) || 0)}
+                        onFocus={(e) => e.target.select()}
                         min={1} 
                         max={20} 
                         className="w-full p-3 pl-4 pr-12 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-slate-800 font-medium"
@@ -358,6 +358,13 @@ export default function App() {
                       >
                         {isCopied ? <CheckCircle size={18} className="text-green-600" /> : <Copy size={18} />}
                         <span className={isCopied ? "text-green-600" : ""}>{isCopied ? 'Tersalin' : 'Salin'}</span>
+                      </button>
+                      <button 
+                        onClick={handlePrint}
+                        className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-all shadow-sm"
+                      >
+                        <Printer size={18} />
+                        <span>Cetak</span>
                       </button>
                       <button 
                         onClick={handleExportPdf}
@@ -512,28 +519,32 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Hidden PDF Export Container (Off-screen instead of hidden for html2pdf) */}
-      <div 
-        style={{ 
-          position: 'fixed', 
-          left: '-9999px', 
-          top: '0', 
-          width: '210mm',
-          backgroundColor: 'white',
-          zIndex: -100
-        }}
-      >
-        <div ref={pdfRef} className="p-10 bg-white text-black font-serif" style={{ width: '210mm' }}>
-          <div className="prose prose-slate prose-lg max-w-none">
-            <ReactMarkdown>{result}</ReactMarkdown>
-          </div>
-          <div className="mt-10 pt-4 border-t border-slate-200 text-center text-xs text-slate-400 font-sans">
-            Dihasilkan oleh AI Writer Pro — Dokumen ini dibuat menggunakan Kecerdasan Buatan (AI)
-          </div>
+      {/* Print Container */}
+      <div id="print-area" className="hidden print:block p-10 bg-white text-black font-serif">
+        <div className="prose prose-slate prose-lg max-w-none">
+          <ReactMarkdown>{result}</ReactMarkdown>
+        </div>
+        <div className="mt-10 pt-4 border-t border-slate-200 text-center text-xs text-slate-400 font-sans">
+          Dihasilkan oleh AI Writer Pro — Dokumen ini dibuat menggunakan Kecerdasan Buatan (AI)
         </div>
       </div>
 
       <style>{`
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+          #print-area, #print-area * {
+            visibility: visible;
+          }
+          #print-area {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            display: block !important;
+          }
+        }
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
         }
