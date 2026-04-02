@@ -365,20 +365,22 @@ export default function App() {
                         </button>
                       </div>
 
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
                         <button 
                           onClick={handleCopy}
-                          className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-all shadow-sm"
+                          className="flex items-center gap-1.5 px-2 py-1.5 sm:px-3 sm:py-2 bg-white border border-slate-200 rounded-lg text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-all shadow-sm"
+                          title="Salin ke Clipboard"
                         >
-                          {isCopied ? <CheckCircle size={18} className="text-green-600" /> : <Copy size={18} />}
-                          <span className={isCopied ? "text-green-600" : ""}>{isCopied ? 'Tersalin' : 'Salin'}</span>
+                          {isCopied ? <CheckCircle size={16} className="text-green-600 sm:w-[18px] sm:h-[18px]" /> : <Copy size={16} className="sm:w-[18px] sm:h-[18px]" />}
+                          <span className={cn("hidden sm:inline", isCopied ? "text-green-600" : "")}>{isCopied ? 'Tersalin' : 'Salin'}</span>
                         </button>
                         <button 
                           onClick={handlePrint}
-                          className="flex items-center gap-2 px-3 py-2 bg-indigo-50 border border-indigo-100 rounded-lg text-sm font-medium text-indigo-700 hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
+                          className="flex items-center gap-1.5 px-2 py-1.5 sm:px-3 sm:py-2 bg-indigo-50 border border-indigo-100 rounded-lg text-xs sm:text-sm font-medium text-indigo-700 hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
+                          title="Cetak Artikel"
                         >
-                          <Printer size={18} />
-                          <span>Cetak</span>
+                          <Printer size={16} className="sm:w-[18px] sm:h-[18px]" />
+                          <span className="hidden sm:inline">Cetak</span>
                         </button>
                       </div>
                     </motion.div>
