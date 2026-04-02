@@ -561,8 +561,18 @@ export default function App() {
           margin-bottom: 1.5rem;
         }
         
-        /* Judul tidak boleh di-indent */
-        .prose h1, .prose h2, .prose h3, .prose h4 {
+        /* Judul otomatis rata tengah */
+        .prose h1 {
+          text-indent: 0 !important;
+          text-align: center !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
+          width: 100% !important;
+          display: block !important;
+        }
+        
+        /* Subjudul tidak boleh di-indent */
+        .prose h2, .prose h3, .prose h4 {
           text-indent: 0;
         }
 
