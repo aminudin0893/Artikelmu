@@ -40,6 +40,7 @@ export default function App() {
   const [result, setResult] = useState('');
   const [error, setError] = useState('');
   const [isCopied, setIsCopied] = useState(false);
+  const [isExportingPdf, setIsExportingPdf] = useState(false);
 
   const resultRef = useRef<HTMLDivElement>(null);
   const pdfRef = useRef<HTMLDivElement>(null);
@@ -90,7 +91,22 @@ export default function App() {
   const handleCopy = async () => {
     if (!result) return;
     try {
-      await navigator.clipboard.writeText(result);
+      // Primary method: navigator.clipboard
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(result);
+      } else {
+        // Fallback method: textarea
+        const textArea = document.createElement("textarea");
+        textArea.value = result;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        textArea.style.top = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
     } catch (err) {
@@ -98,20 +114,27 @@ export default function App() {
     }
   };
 
-  const handleExportPdf = () => {
+  const handleExportPdf = async () => {
     if (!result || !pdfRef.current) return;
+    setIsExportingPdf(true);
 
-    const element = pdfRef.current;
-    const opt = {
-      margin: 20,
-      filename: `Artikel_${new Date().getTime()}.pdf`,
-      image: { type: 'jpeg' as const, quality: 1 },
-      html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const },
-      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-    };
+    try {
+      const element = pdfRef.current;
+      const opt = {
+        margin: 20,
+        filename: `Artikel_${new Date().getTime()}.pdf`,
+        image: { type: 'jpeg' as const, quality: 1 },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      };
 
-    html2pdf().set(opt).from(element).save();
+      await html2pdf().set(opt).from(element).save();
+    } catch (err) {
+      console.error('Failed to export PDF', err);
+    } finally {
+      setIsExportingPdf(false);
+    }
   };
 
   const pasteApiKey = async () => {
@@ -306,10 +329,11 @@ export default function App() {
                       </button>
                       <button 
                         onClick={handleExportPdf}
-                        className="flex items-center gap-2 px-3 py-2 bg-indigo-50 border border-indigo-100 rounded-lg text-sm font-medium text-indigo-700 hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
+                        disabled={isExportingPdf}
+                        className="flex items-center gap-2 px-3 py-2 bg-indigo-50 border border-indigo-100 rounded-lg text-sm font-medium text-indigo-700 hover:bg-indigo-600 hover:text-white transition-all shadow-sm disabled:opacity-50"
                       >
-                        <FileText size={18} />
-                        <span>Simpan PDF</span>
+                        {isExportingPdf ? <Loader2 size={18} className="animate-spin" /> : <FileText size={18} />}
+                        <span>{isExportingPdf ? 'Memproses...' : 'Simpan PDF'}</span>
                       </button>
                     </motion.div>
                   )}
@@ -456,8 +480,8 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Hidden PDF Export Container */}
-      <div className="hidden">
+      {/* Hidden PDF Export Container (Off-screen instead of hidden for html2pdf) */}
+      <div className="absolute -left-[9999px] top-0 pointer-events-none">
         <div ref={pdfRef} className="p-10 bg-white text-black font-serif" style={{ width: '210mm' }}>
           <div className="prose prose-slate prose-lg max-w-none">
             <ReactMarkdown>{result}</ReactMarkdown>
