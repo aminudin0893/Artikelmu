@@ -95,10 +95,18 @@ export default function App() {
       console.error(err);
       let userFriendlyError = 'Gagal menghasilkan teks. Coba beberapa saat lagi.';
       
-      if (err.message?.includes('503') || err.message?.includes('high demand')) {
+      const errorMessage = err.message || '';
+      
+      if (errorMessage.includes('503') || errorMessage.includes('high demand')) {
         userFriendlyError = 'Server Gemini sedang sangat sibuk (High Demand). Silakan coba lagi dalam beberapa menit, atau gunakan API Key pribadi Anda di menu Pengaturan untuk prioritas lebih tinggi.';
-      } else if (err.message?.includes('API_KEY_INVALID')) {
+      } else if (errorMessage.includes('API_KEY_INVALID') || errorMessage.includes('API key not valid')) {
         userFriendlyError = 'API Key yang Anda masukkan tidak valid. Silakan periksa kembali di menu Pengaturan.';
+      } else if (errorMessage.includes('PERMISSION_DENIED') || errorMessage.includes('403')) {
+        userFriendlyError = 'Akses ditolak. Pastikan API Key Anda memiliki izin yang benar atau coba gunakan API Key pribadi di menu Pengaturan.';
+      } else if (errorMessage.includes('quota')) {
+        userFriendlyError = 'Kuota API telah habis. Silakan coba lagi nanti atau gunakan API Key pribadi.';
+      } else if (errorMessage) {
+        userFriendlyError = `Terjadi kesalahan: ${errorMessage}`;
       }
       
       setError(userFriendlyError);
