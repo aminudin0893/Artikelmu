@@ -534,7 +534,7 @@ export default function App() {
 
       {/* Print Container */}
       <div id="print-area" className="hidden print:block p-10 bg-white text-black font-serif">
-        <div className="prose prose-slate prose-lg max-w-none">
+        <div className="prose prose-slate prose-lg max-w-none" style={{ textAlign: textAlign }}>
           <ReactMarkdown>{result}</ReactMarkdown>
         </div>
         <div className="mt-10 pt-4 border-t border-slate-200 text-center text-xs text-slate-400 font-sans">
