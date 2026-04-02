@@ -73,7 +73,7 @@ export default function App() {
     const styleConfig = WRITING_STYLES.find(s => s.id === selectedStyleId);
     if (!styleConfig) return;
 
-    const userPrompt = `Buatkan tulisan berdasarkan informasi/fakta berikut:\n\n${topic}\n\nInstruksi Penting:\n1. Tuliskan tepat sebanyak ${paragraphs} paragraf (tidak termasuk judul utama).\n2. Berikan Judul Utama di baris paling atas menggunakan format Header Markdown (misal: # Judul Tulisan).\n3. Pastikan gaya penulisannya sangat kental dengan gaya yang diminta.\n4. Gunakan tata bahasa Indonesia yang baik, benar, dan sesuai dengan kaidah EYD (Ejaan Yang Disempurnakan).\n5. Pastikan struktur paragraf jelas dan mengalir secara logis.\n6. Pisahkan setiap paragraf dengan DUA baris baru (double newline) agar terbaca sebagai paragraf yang terpisah dalam format Markdown.`;
+    const userPrompt = `Buatkan tulisan berdasarkan informasi/fakta berikut:\n\n${topic}\n\nInstruksi Penting:\n1. Tuliskan tepat sebanyak ${paragraphs} paragraf (tidak termasuk judul utama).\n2. Berikan Judul Utama di baris paling atas menggunakan format Header Markdown (misal: # Judul Tulisan).\n3. Pastikan gaya penulisannya sangat kental dengan gaya yang diminta.\n4. Gunakan tata bahasa Indonesia yang baik, benar, dan sesuai dengan kaidah EYD (Ejaan Yang Disempurnakan) yang terbaru.\n5. Pastikan struktur paragraf jelas dan mengalir secara logis.\n6. Setiap awal paragraf harus menjorok ke dalam (indentasi) seperti format surat atau buku resmi.\n7. Pisahkan setiap paragraf dengan DUA baris baru (double newline) agar terbaca sebagai paragraf yang terpisah dalam format Markdown.`;
     const systemPrompt = styleConfig.prompt;
 
     try {
@@ -543,6 +543,29 @@ export default function App() {
       </div>
 
       <style>{`
+        /* Sembunyikan Vercel Toolbar */
+        #__next-build-watcher, 
+        .vercel-toolbar, 
+        [class*="vercel-toolbar"],
+        #vercel-live-feedback-widget,
+        [id*="vercel-toolbar"] {
+          display: none !important;
+          opacity: 0 !important;
+          visibility: hidden !important;
+          pointer-events: none !important;
+        }
+
+        /* Indentasi Paragraf */
+        .prose p {
+          text-indent: 2rem;
+          margin-bottom: 1.5rem;
+        }
+        
+        /* Judul tidak boleh di-indent */
+        .prose h1, .prose h2, .prose h3, .prose h4 {
+          text-indent: 0;
+        }
+
         @media print {
           body * {
             visibility: hidden;
