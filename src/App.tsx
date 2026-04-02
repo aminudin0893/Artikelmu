@@ -92,7 +92,15 @@ export default function App() {
       setStatus('success');
     } catch (err: any) {
       console.error(err);
-      setError(err.message || 'Gagal menghasilkan teks. Coba beberapa saat lagi.');
+      let userFriendlyError = 'Gagal menghasilkan teks. Coba beberapa saat lagi.';
+      
+      if (err.message?.includes('503') || err.message?.includes('high demand')) {
+        userFriendlyError = 'Server Gemini sedang sangat sibuk (High Demand). Silakan coba lagi dalam beberapa menit, atau gunakan API Key pribadi Anda di menu Pengaturan untuk prioritas lebih tinggi.';
+      } else if (err.message?.includes('API_KEY_INVALID')) {
+        userFriendlyError = 'API Key yang Anda masukkan tidak valid. Silakan periksa kembali di menu Pengaturan.';
+      }
+      
+      setError(userFriendlyError);
       setStatus('error');
     }
   };
