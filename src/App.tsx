@@ -569,11 +569,36 @@ export default function App() {
           margin-right: auto !important;
           width: 100% !important;
           display: block !important;
+          font-size: 1.5rem !important;
+          line-height: 2rem !important;
+          margin-top: 0 !important;
+          margin-bottom: 1.5rem !important;
+          font-weight: 700 !important;
         }
         
         /* Subjudul tidak boleh di-indent */
-        .prose h2, .prose h3, .prose h4 {
-          text-indent: 0;
+        .prose h2 {
+          text-indent: 0 !important;
+          font-size: 1.25rem !important;
+          margin-top: 1.5rem !important;
+          margin-bottom: 0.75rem !important;
+          font-weight: 600 !important;
+        }
+        
+        .prose h3 {
+          text-indent: 0 !important;
+          font-size: 1.125rem !important;
+          margin-top: 1.25rem !important;
+          margin-bottom: 0.5rem !important;
+          font-weight: 600 !important;
+        }
+        
+        .prose h4 {
+          text-indent: 0 !important;
+          font-size: 1rem !important;
+          margin-top: 1rem !important;
+          margin-bottom: 0.5rem !important;
+          font-weight: 600 !important;
         }
 
         @media print {
