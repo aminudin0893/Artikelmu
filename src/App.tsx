@@ -557,7 +557,7 @@ export default function App() {
 
         /* Indentasi Paragraf */
         .prose p {
-          text-indent: 2rem;
+          text-indent: 1.25rem;
           margin-bottom: 1.5rem;
         }
         
