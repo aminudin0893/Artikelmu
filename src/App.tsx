@@ -674,6 +674,7 @@ export default function App() {
           margin-bottom: 1.75rem;
           line-height: 1.8;
           color: #334155;
+          break-inside: avoid;
         }
         
         /* Judul otomatis rata tengah */
@@ -723,6 +724,10 @@ export default function App() {
         }
 
         @media print {
+          @page {
+            size: A4;
+            margin: 20mm;
+          }
           body * {
             visibility: hidden;
           }
@@ -735,6 +740,10 @@ export default function App() {
             top: 0;
             width: 100%;
             display: block !important;
+            padding: 0 !important;
+          }
+          .prose h1, .prose h2, .prose h3, .prose h4 {
+            break-after: avoid;
           }
         }
         .custom-scrollbar::-webkit-scrollbar {
