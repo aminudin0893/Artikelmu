@@ -184,66 +184,88 @@ export default function App() {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-100 via-slate-50 to-white flex items-center justify-center p-4">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white p-8 rounded-2xl shadow-xl shadow-slate-200 w-full max-w-md border border-slate-100"
+          className="bg-white/80 backdrop-blur-xl p-8 md:p-10 rounded-[2.5rem] shadow-2xl shadow-indigo-100/50 w-full max-w-md border border-white/50"
         >
-          <div className="flex flex-col items-center mb-8">
-            <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-200 mb-4">
-              <Pen size={32} />
+          <div className="flex flex-col items-center mb-10">
+            <div className="w-20 h-20 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-3xl flex items-center justify-center text-white shadow-xl shadow-indigo-200 mb-6 rotate-3">
+              <Pen size={40} />
             </div>
-            <h1 className="text-2xl font-bold text-slate-900">ArtikelMu</h1>
-            <p className="text-slate-500 mt-2">Silakan login untuk melanjutkan</p>
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">ArtikelMu</h1>
+            <p className="text-slate-500 mt-2 font-medium">Selamat datang kembali!</p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Email Anda</label>
-              <div className="relative">
+              <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Email Anda</label>
+              <div className="relative group">
                 <input
                   type={showApiKey ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none"
+                  className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 focus:bg-white transition-all outline-none text-lg"
                   placeholder="Masukkan Email Anda..."
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowApiKey(!showApiKey)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-indigo-600 transition-colors"
                 >
-                  {showApiKey ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showApiKey ? <EyeOff size={22} /> : <Eye size={22} />}
                 </button>
               </div>
-              {loginError && <p className="text-red-500 text-xs mt-2 flex items-center gap-1"><AlertCircle size={12} /> {loginError}</p>}
+              {loginError && (
+                <motion.p 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="text-red-500 text-sm mt-3 flex items-center gap-2 font-medium ml-1"
+                >
+                  <AlertCircle size={16} /> {loginError}
+                </motion.p>
+              )}
             </div>
             <button
               type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl shadow-lg shadow-indigo-100 transition-all flex items-center justify-center gap-2"
+              className="w-full bg-slate-900 hover:bg-indigo-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-slate-200 hover:shadow-indigo-200 transition-all flex items-center justify-center gap-3 text-lg active:scale-[0.98]"
             >
-              <CheckCircle size={20} />
-              Masuk
+              <CheckCircle size={24} />
+              Masuk Sekarang
             </button>
           </form>
+          
+          <p className="text-center text-slate-400 text-xs mt-10 font-medium">
+            &copy; 2026 ArtikelMu. All rights reserved.
+          </p>
         </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans">
+    <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-900">
       {/* Navigation */}
-      <nav className="bg-white/70 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40">
+      <nav className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
-                <Pen size={20} />
+          <div className="flex justify-between h-20 items-center">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-100">
+                <Pen size={24} />
               </div>
-              <h1 className="text-xl font-bold text-slate-900 tracking-tight">ArtikelMu</h1>
+              <div>
+                <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-none">ArtikelMu</h1>
+                <p className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest mt-1">AI Writing Assistant</p>
+              </div>
+            </div>
+            
+            <div className="hidden md:flex items-center gap-6">
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-indigo-50 rounded-full border border-indigo-100">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                <span className="text-xs font-bold text-indigo-700">AI Engine Online</span>
+              </div>
             </div>
           </div>
         </div>
@@ -254,39 +276,43 @@ export default function App() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Left Panel */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-bl-full -mr-10 -mt-10 z-0" />
+          <div className="lg:col-span-5 space-y-8">
+            <div className="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-xl shadow-slate-200/50 border border-slate-200/60 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-indigo-50/50 rounded-bl-full -mr-12 -mt-12 z-0" />
               
-              <div className="relative z-10 space-y-6">
+              <div className="relative z-10 space-y-8">
                 <div>
-                  <h2 className="text-2xl font-bold text-slate-900 mb-1">Buat Tulisan Baru</h2>
-                  <p className="text-sm text-slate-500">Masukkan fakta, pilih gaya, dan biarkan AI bekerja.</p>
+                  <h2 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">Buat Tulisan</h2>
+                  <p className="text-sm text-slate-500 font-medium leading-relaxed">Masukkan fakta, pilih gaya, dan biarkan AI bekerja untuk Anda.</p>
                 </div>
 
                 {/* Topic Input */}
-                <div>
-                  <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
-                    <AlignLeft size={16} className="text-indigo-500" />
+                <div className="space-y-3">
+                  <label className="flex items-center gap-2.5 text-sm font-bold text-slate-700 ml-1">
+                    <div className="p-1.5 bg-indigo-100 rounded-lg text-indigo-600">
+                      <AlignLeft size={14} />
+                    </div>
                     Fakta atau Topik Utama
                   </label>
                   <textarea 
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
-                    rows={5} 
-                    className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all resize-none text-slate-800" 
+                    rows={6} 
+                    className="w-full p-5 bg-slate-50/50 border border-slate-200 rounded-3xl focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all resize-none text-slate-800 leading-relaxed placeholder:text-slate-400" 
                     placeholder="Contoh: Terjadi lonjakan penggunaan AI di kalangan mahasiswa untuk mengerjakan tugas akhir..."
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-6">
                   {/* Paragraph Count */}
-                  <div>
-                    <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
-                      <ListOrdered size={16} className="text-indigo-500" />
-                      Jumlah Paragraf
+                  <div className="space-y-3">
+                    <label className="flex items-center gap-2.5 text-sm font-bold text-slate-700 ml-1">
+                      <div className="p-1.5 bg-indigo-100 rounded-lg text-indigo-600">
+                        <ListOrdered size={14} />
+                      </div>
+                      Paragraf
                     </label>
-                    <div className="relative">
+                    <div className="relative group">
                       <input 
                         type="number" 
                         value={paragraphs}
@@ -294,22 +320,24 @@ export default function App() {
                         onFocus={(e) => e.target.select()}
                         min={1} 
                         max={20} 
-                        className="w-full p-3 pl-4 pr-12 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-slate-800 font-medium"
+                        className="w-full p-4 pl-5 pr-14 bg-slate-50/50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all text-slate-800 font-bold text-lg"
                       />
-                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-medium pointer-events-none">Max 20</span>
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-400 uppercase tracking-tighter pointer-events-none group-focus-within:text-indigo-400">Max 20</span>
                     </div>
                   </div>
 
                   {/* Category Select */}
-                  <div>
-                    <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
-                      <Folders size={16} className="text-indigo-500" />
+                  <div className="space-y-3">
+                    <label className="flex items-center gap-2.5 text-sm font-bold text-slate-700 ml-1">
+                      <div className="p-1.5 bg-indigo-100 rounded-lg text-indigo-600">
+                        <Folders size={14} />
+                      </div>
                       Kategori
                     </label>
                     <select 
                       value={category}
-                      onChange={(e) => setCategory(e.target.value as WritingStyle['category'])}
-                      className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-slate-800 font-medium appearance-none cursor-pointer"
+                      onChange={(e) => setCategory(e.target.value as any)}
+                      className="w-full p-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all text-slate-800 font-bold appearance-none cursor-pointer"
                     >
                       <option value="Jurnalistik">Jurnalistik</option>
                       <option value="Esai">Esai Akademik</option>
@@ -319,56 +347,56 @@ export default function App() {
                 </div>
 
                 {/* Style Selection */}
-                <div>
-                  <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
-                    <Palette size={16} className="text-indigo-500" />
-                    Gaya Penulisan
+                <div className="space-y-4">
+                  <label className="flex items-center gap-2.5 text-sm font-bold text-slate-700 ml-1">
+                    <div className="p-1.5 bg-indigo-100 rounded-lg text-indigo-600">
+                      <Palette size={14} />
+                    </div>
+                    Pilih Gaya Penulisan
                   </label>
-                  <div className="grid grid-cols-1 gap-3 max-h-64 overflow-y-auto pr-2 rounded-xl custom-scrollbar">
+                  <div className="grid grid-cols-1 gap-3 max-h-[320px] overflow-y-auto pr-2 custom-scrollbar">
                     {filteredStyles.map((style) => (
                       <button
                         key={style.id}
                         onClick={() => setSelectedStyleId(style.id)}
                         className={cn(
-                          "flex items-start gap-3 p-3 rounded-xl border transition-all text-left",
+                          "flex flex-col items-start p-4 rounded-2xl border-2 text-left transition-all relative group overflow-hidden",
                           selectedStyleId === style.id 
-                            ? "bg-indigo-50 border-indigo-300 ring-1 ring-indigo-300" 
-                            : "bg-white border-slate-200 hover:border-slate-300"
+                            ? "bg-indigo-50 border-indigo-600 shadow-md shadow-indigo-100" 
+                            : "bg-white border-slate-100 hover:border-indigo-200 hover:bg-slate-50"
                         )}
                       >
-                        <div className="mt-1 flex-shrink-0">
-                          <div className={cn(
-                            "w-4 h-4 rounded-full border flex items-center justify-center",
-                            selectedStyleId === style.id ? "border-indigo-600" : "border-slate-300"
-                          )}>
-                            {selectedStyleId === style.id && <div className="w-2 h-2 bg-indigo-600 rounded-full" />}
-                          </div>
-                        </div>
-                        <div>
+                        <div className="relative z-10">
                           <p className={cn(
-                            "font-bold text-sm",
+                            "text-sm font-bold transition-colors",
                             selectedStyleId === style.id ? "text-indigo-900" : "text-slate-800"
                           )}>{style.name}</p>
-                          <p className="text-xs text-slate-500 mt-0.5">{style.desc}</p>
+                          <p className="text-[11px] text-slate-500 mt-1 font-medium leading-tight">{style.desc}</p>
                         </div>
+                        {selectedStyleId === style.id && (
+                          <motion.div 
+                            layoutId="active-style"
+                            className="absolute inset-0 bg-indigo-600/5 z-0"
+                          />
+                        )}
                       </button>
                     ))}
                   </div>
                 </div>
 
                 {/* Generate Button */}
-                <div className="pt-2">
+                <div className="pt-4">
                   <button 
                     onClick={handleGenerate}
                     disabled={status === 'loading'}
-                    className="w-full flex items-center justify-center gap-2 bg-slate-900 hover:bg-indigo-600 disabled:bg-indigo-400 text-white py-4 px-6 rounded-2xl font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+                    className="w-full flex items-center justify-center gap-3 bg-slate-900 hover:bg-indigo-600 disabled:bg-indigo-400 text-white py-5 px-8 rounded-[1.5rem] font-black transition-all shadow-xl shadow-slate-200 hover:shadow-indigo-200 hover:-translate-y-1 active:scale-[0.98] text-lg"
                   >
                     {status === 'loading' ? (
-                      <Loader2 className="animate-spin" size={20} />
+                      <Loader2 className="animate-spin" size={24} />
                     ) : (
-                      <Wand2 size={20} />
+                      <Wand2 size={24} />
                     )}
-                    <span>{status === 'loading' ? 'Menyusun...' : 'Buat Tulisan Sekarang'}</span>
+                    <span>{status === 'loading' ? 'Menyusun Kalimat...' : 'Buat Tulisan Sekarang'}</span>
                   </button>
                 </div>
 
@@ -387,33 +415,36 @@ export default function App() {
           </div>
 
           {/* Right Panel */}
-          <div className="lg:col-span-7 h-[calc(100vh-8rem)] min-h-[600px]">
-            <div className="bg-white rounded-3xl shadow-sm border border-slate-200 h-full flex flex-col relative overflow-hidden">
+          <div className="lg:col-span-7 h-[calc(100vh-10rem)] min-h-[650px]">
+            <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200/50 border border-slate-200/60 h-full flex flex-col relative overflow-hidden">
               
               {/* Header Panel Output */}
-              <div className="px-8 py-5 border-b border-slate-100 flex items-center justify-between bg-white/80 backdrop-blur-md z-20">
+              <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-white/90 backdrop-blur-xl z-20">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-slate-100 rounded-lg text-slate-500">
-                    <Newspaper size={20} />
+                  <div className="p-2.5 bg-slate-100 rounded-xl text-slate-600">
+                    <Newspaper size={22} />
                   </div>
-                  <h3 className="font-bold text-slate-800">Hasil Tulisan</h3>
+                  <div>
+                    <h3 className="font-black text-slate-900 tracking-tight">Hasil Tulisan</h3>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Output Preview</p>
+                  </div>
                 </div>
 
                 {/* Action Bar */}
                 <AnimatePresence>
                   {status === 'success' && (
                     <motion.div 
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 20 }}
-                      className="flex items-center gap-4"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      className="flex items-center gap-3 sm:gap-4"
                     >
                       {/* Alignment Controls */}
-                      <div className="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200">
+                      <div className="hidden sm:flex items-center bg-slate-100/80 p-1 rounded-xl border border-slate-200/60">
                         <button 
                           onClick={() => setTextAlign('left')}
                           className={cn(
-                            "p-1.5 rounded-md transition-all",
+                            "p-2 rounded-lg transition-all",
                             textAlign === 'left' ? "bg-white text-indigo-600 shadow-sm" : "text-slate-400 hover:text-slate-600"
                           )}
                           title="Rata Kiri"
@@ -423,7 +454,7 @@ export default function App() {
                         <button 
                           onClick={() => setTextAlign('center')}
                           className={cn(
-                            "p-1.5 rounded-md transition-all",
+                            "p-2 rounded-lg transition-all",
                             textAlign === 'center' ? "bg-white text-indigo-600 shadow-sm" : "text-slate-400 hover:text-slate-600"
                           )}
                           title="Rata Tengah"
@@ -433,7 +464,7 @@ export default function App() {
                         <button 
                           onClick={() => setTextAlign('right')}
                           className={cn(
-                            "p-1.5 rounded-md transition-all",
+                            "p-2 rounded-lg transition-all",
                             textAlign === 'right' ? "bg-white text-indigo-600 shadow-sm" : "text-slate-400 hover:text-slate-600"
                           )}
                           title="Rata Kanan"
@@ -443,7 +474,7 @@ export default function App() {
                         <button 
                           onClick={() => setTextAlign('justify')}
                           className={cn(
-                            "p-1.5 rounded-md transition-all",
+                            "p-2 rounded-lg transition-all",
                             textAlign === 'justify' ? "bg-white text-indigo-600 shadow-sm" : "text-slate-400 hover:text-slate-600"
                           )}
                           title="Rata Kiri Kanan"
@@ -452,21 +483,21 @@ export default function App() {
                         </button>
                       </div>
 
-                      <div className="flex items-center gap-1.5 sm:gap-2">
+                      <div className="flex items-center gap-2">
                         <button 
                           onClick={handleCopy}
-                          className="flex items-center gap-1.5 px-2 py-1.5 sm:px-3 sm:py-2 bg-white border border-slate-200 rounded-lg text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-all shadow-sm"
+                          className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-all shadow-sm active:scale-95"
                           title="Salin ke Clipboard"
                         >
-                          {isCopied ? <CheckCircle size={16} className="text-green-600 sm:w-[18px] sm:h-[18px]" /> : <Copy size={16} className="sm:w-[18px] sm:h-[18px]" />}
+                          {isCopied ? <CheckCircle size={18} className="text-green-600" /> : <Copy size={18} />}
                           <span className={cn("hidden sm:inline", isCopied ? "text-green-600" : "")}>{isCopied ? 'Tersalin' : 'Salin'}</span>
                         </button>
                         <button 
                           onClick={handlePrint}
-                          className="flex items-center gap-1.5 px-2 py-1.5 sm:px-3 sm:py-2 bg-indigo-50 border border-indigo-100 rounded-lg text-xs sm:text-sm font-medium text-indigo-700 hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
+                          className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 active:scale-95"
                           title="Cetak Artikel"
                         >
-                          <Printer size={16} className="sm:w-[18px] sm:h-[18px]" />
+                          <Printer size={18} />
                           <span className="hidden sm:inline">Cetak</span>
                         </button>
                       </div>
@@ -476,38 +507,30 @@ export default function App() {
               </div>
 
               {/* Content Area */}
-              <div className="flex-grow overflow-y-auto relative z-10 p-8 scroll-smooth custom-scrollbar">
+              <div className="flex-grow overflow-y-auto relative z-10 p-10 md:p-12 scroll-smooth custom-scrollbar bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]">
                 
                 {/* Empty State */}
                 {status === 'empty' && (
                   <div className="h-full flex flex-col items-center justify-center text-slate-400">
-                    <Newspaper size={64} className="text-slate-200 mb-4" />
-                    <p className="text-slate-500 font-medium">Kanvas siap.</p>
-                    <p className="text-sm text-slate-400 mt-1 max-w-xs text-center">Hasil generate AI akan ditampilkan di sini dalam format yang rapi.</p>
+                    <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mb-6">
+                      <Newspaper size={48} className="text-slate-200" />
+                    </div>
+                    <p className="text-slate-600 font-black text-xl tracking-tight">Kanvas Siap</p>
+                    <p className="text-sm text-slate-400 mt-2 max-w-xs text-center font-medium leading-relaxed">Hasil tulisan AI akan ditampilkan di sini dengan format yang rapi dan profesional.</p>
                   </div>
                 )}
 
                 {/* Loading State */}
                 {status === 'loading' && (
                   <div className="h-full flex flex-col items-center justify-center">
-                    <div className="flex gap-2 mb-8">
-                      <motion.div 
-                        animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
-                        transition={{ repeat: Infinity, duration: 1, delay: 0 }}
-                        className="w-3 h-3 bg-indigo-600 rounded-full" 
-                      />
-                      <motion.div 
-                        animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
-                        transition={{ repeat: Infinity, duration: 1, delay: 0.2 }}
-                        className="w-3 h-3 bg-indigo-600 rounded-full" 
-                      />
-                      <motion.div 
-                        animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
-                        transition={{ repeat: Infinity, duration: 1, delay: 0.4 }}
-                        className="w-3 h-3 bg-indigo-600 rounded-full" 
-                      />
+                    <div className="relative">
+                      <div className="w-20 h-20 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Pen size={24} className="text-indigo-600 animate-pulse" />
+                      </div>
                     </div>
-                    <p className="text-slate-500 font-medium mt-4 animate-pulse">Menyusun kalimat...</p>
+                    <p className="text-slate-600 font-bold mt-8 tracking-tight">Menyusun Kalimat Terbaik...</p>
+                    <p className="text-xs text-slate-400 mt-2 font-medium">Ini mungkin memakan waktu beberapa detik</p>
                   </div>
                 )}
 
@@ -574,42 +597,47 @@ export default function App() {
                 </button>
               </div>
               
-              <div className="p-6 space-y-4">
+              <div className="p-8 space-y-6">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">Gemini API Key</label>
-                  <div className="relative">
+                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Gemini API Key</label>
+                  <div className="relative group">
                     <input 
                       type={showApiKey ? "text" : "password"}
                       value={apiKey}
                       onChange={(e) => setApiKey(e.target.value)}
-                      className="w-full p-3 pl-4 pr-20 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-sm font-mono text-slate-800 placeholder:font-sans placeholder:text-slate-400" 
+                      className="w-full p-4 pl-5 pr-24 bg-slate-50/50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all text-sm font-mono text-slate-800 placeholder:font-sans placeholder:text-slate-400" 
                       placeholder="Kosongkan = Default"
                     />
-                    <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
                       <button 
                         onClick={() => setShowApiKey(!showApiKey)}
-                        className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-md transition-colors"
+                        className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all"
+                        title={showApiKey ? "Sembunyikan" : "Tampilkan"}
                       >
                         {showApiKey ? <EyeOff size={18} /> : <Eye size={18} />}
                       </button>
                       <button 
                         onClick={pasteApiKey}
-                        className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-md transition-colors"
+                        className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all"
+                        title="Tempel dari Clipboard"
                       >
                         <Clipboard size={18} />
                       </button>
                     </div>
                   </div>
-                  <p className="text-xs text-slate-500 mt-2 leading-relaxed">
-                    Aplikasi otomatis menggunakan kuota bawaan jika dikosongkan. Masukkan key dari Google AI Studio untuk memakai kuota pribadi Anda.
-                  </p>
+                  <div className="mt-4 p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100/50">
+                    <p className="text-[11px] text-indigo-700 font-medium leading-relaxed flex gap-2">
+                      <AlertCircle size={14} className="shrink-0 mt-0.5" />
+                      <span>Aplikasi otomatis menggunakan kuota bawaan jika dikosongkan. Masukkan key dari Google AI Studio untuk memakai kuota pribadi Anda.</span>
+                    </p>
+                  </div>
                 </div>
               </div>
               
-              <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-end">
+              <div className="p-6 bg-slate-50/50 border-t border-slate-100 flex justify-end">
                 <button 
                   onClick={() => setIsSettingsOpen(false)}
-                  className="px-5 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-semibold hover:bg-slate-800 transition-colors"
+                  className="px-8 py-3 bg-slate-900 text-white rounded-xl text-sm font-black hover:bg-indigo-600 transition-all shadow-lg shadow-slate-200 hover:shadow-indigo-100 active:scale-95"
                 >
                   Simpan & Tutup
                 </button>
@@ -642,8 +670,10 @@ export default function App() {
 
         /* Indentasi Paragraf */
         .prose p {
-          text-indent: 1.25rem;
-          margin-bottom: 1.5rem;
+          text-indent: 1.5rem;
+          margin-bottom: 1.75rem;
+          line-height: 1.8;
+          color: #334155;
         }
         
         /* Judul otomatis rata tengah */
@@ -654,36 +684,42 @@ export default function App() {
           margin-right: auto !important;
           width: 100% !important;
           display: block !important;
-          font-size: 1.5rem !important;
-          line-height: 2rem !important;
+          font-size: 2rem !important;
+          line-height: 1.2 !important;
           margin-top: 0 !important;
-          margin-bottom: 1.5rem !important;
-          font-weight: 700 !important;
+          margin-bottom: 2.5rem !important;
+          font-weight: 900 !important;
+          letter-spacing: -0.025em !important;
+          color: #0f172a !important;
         }
         
         /* Subjudul tidak boleh di-indent */
         .prose h2 {
           text-indent: 0 !important;
-          font-size: 1.25rem !important;
-          margin-top: 1.5rem !important;
-          margin-bottom: 0.75rem !important;
-          font-weight: 600 !important;
+          font-size: 1.5rem !important;
+          margin-top: 2.5rem !important;
+          margin-bottom: 1rem !important;
+          font-weight: 800 !important;
+          letter-spacing: -0.025em !important;
+          color: #1e293b !important;
         }
         
         .prose h3 {
           text-indent: 0 !important;
-          font-size: 1.125rem !important;
-          margin-top: 1.25rem !important;
-          margin-bottom: 0.5rem !important;
-          font-weight: 600 !important;
+          font-size: 1.25rem !important;
+          margin-top: 2rem !important;
+          margin-bottom: 0.75rem !important;
+          font-weight: 700 !important;
+          color: #334155 !important;
         }
         
         .prose h4 {
           text-indent: 0 !important;
-          font-size: 1rem !important;
-          margin-top: 1rem !important;
+          font-size: 1.125rem !important;
+          margin-top: 1.5rem !important;
           margin-bottom: 0.5rem !important;
-          font-weight: 600 !important;
+          font-weight: 700 !important;
+          color: #475569 !important;
         }
 
         @media print {
@@ -702,17 +738,17 @@ export default function App() {
           }
         }
         .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
+          width: 5px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
           background: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #cbd5e1;
-          border-radius: 10px;
+          background: #e2e8f0;
+          border-radius: 20px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #94a3b8;
+          background: #cbd5e1;
         }
       `}</style>
     </div>
