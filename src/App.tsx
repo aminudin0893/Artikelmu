@@ -117,8 +117,8 @@ export default function App() {
   const handleCopy = async () => {
     if (!result) return;
     try {
-      // Clean text from &nbsp; and leading spaces from each paragraph to ensure clean paste
-      const finalResult = result.replace(/&nbsp;|\u00A0/g, ' ').replace(/^\s+/gm, '');
+      // Clean text from &nbsp; and only remove leading horizontal spaces/tabs (not newlines)
+      const finalResult = result.replace(/&nbsp;|\u00A0/g, ' ').replace(/^[ \t]+/gm, '');
       
       // Primary method: navigator.clipboard
       if (navigator.clipboard && window.isSecureContext) {
