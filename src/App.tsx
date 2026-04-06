@@ -49,6 +49,26 @@ export default function App() {
   const [isCopied, setIsCopied] = useState(false);
   const [textAlign, setTextAlign] = useState<'left' | 'center' | 'right' | 'justify'>('left');
 
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('isLoggedIn') === 'true';
+    }
+    return false;
+  });
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === 'Amin0893&#') {
+      setIsLoggedIn(true);
+      localStorage.setItem('isLoggedIn', 'true');
+      setLoginError('');
+    } else {
+      setLoginError('Email salah!');
+    }
+  };
+
   const resultRef = useRef<HTMLDivElement>(null);
 
   const filteredStyles = WRITING_STYLES.filter(s => s.category === category);
@@ -73,7 +93,7 @@ export default function App() {
     const styleConfig = WRITING_STYLES.find(s => s.id === selectedStyleId);
     if (!styleConfig) return;
 
-    const userPrompt = `Buatkan tulisan berdasarkan informasi/fakta berikut:\n\n${topic}\n\nInstruksi Penting:\n1. Tuliskan tepat sebanyak ${paragraphs} paragraf (tidak termasuk judul utama).\n2. Berikan Judul Utama di baris paling atas menggunakan format Header Markdown (misal: # Judul Tulisan).\n3. Pastikan gaya penulisannya sangat kental dengan gaya yang diminta.\n4. Gunakan tata bahasa Indonesia yang baik, benar, dan sesuai dengan kaidah EYD (Ejaan Yang Disempurnakan) yang terbaru.\n5. Pastikan struktur paragraf jelas dan mengalir secara logis.\n6. Pisahkan setiap paragraf dengan DUA baris baru (double newline) agar terbaca sebagai paragraf yang terpisah dalam format Markdown.`;
+    const userPrompt = `Buatkan tulisan berdasarkan informasi/fakta berikut:\n\n${topic}\n\nInstruksi Penting:\n1. Tuliskan tepat sebanyak ${paragraphs} paragraf (tidak termasuk judul utama).\n2. Berikan Judul Utama di baris paling atas menggunakan format Header Markdown (misal: # Judul Tulisan).\n3. Pastikan gaya penulisannya sangat kental dengan gaya yang diminta.\n4. Gunakan tata bahasa Indonesia yang baik, benar, dan sesuai dengan kaidah EYD (Ejaan Yang Disempurnakan) yang terbaru.\n5. Pastikan struktur paragraf jelas dan mengalir secara logis.\n6. Pisahkan setiap paragraf dengan tepat SATU baris kosong (dua kali pindah baris) agar sesuai standar EYD dan Markdown.`;
     const systemPrompt = styleConfig.prompt;
 
     try {
@@ -118,7 +138,12 @@ export default function App() {
     if (!result) return;
     try {
       // Clean text from &nbsp; and only remove leading horizontal spaces/tabs (not newlines)
-      const finalResult = result.replace(/&nbsp;|\u00A0/g, ' ').replace(/^[ \t]+/gm, '');
+      // Also normalize paragraph spacing to exactly 2 newlines (1 empty line)
+      const finalResult = result
+        .replace(/&nbsp;|\u00A0/g, ' ')
+        .replace(/^[ \t]+/gm, '')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
       
       // Primary method: navigator.clipboard
       if (navigator.clipboard && window.isSecureContext) {
@@ -156,6 +181,57 @@ export default function App() {
       console.error('Failed to paste', err);
     }
   };
+
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white p-8 rounded-2xl shadow-xl shadow-slate-200 w-full max-w-md border border-slate-100"
+        >
+          <div className="flex flex-col items-center mb-8">
+            <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-200 mb-4">
+              <Pen size={32} />
+            </div>
+            <h1 className="text-2xl font-bold text-slate-900">ArtikelMu</h1>
+            <p className="text-slate-500 mt-2">Silakan login untuk melanjutkan</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Email Anda</label>
+              <div className="relative">
+                <input
+                  type={showApiKey ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none"
+                  placeholder="Masukkan Email Anda..."
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowApiKey(!showApiKey)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                >
+                  {showApiKey ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+              {loginError && <p className="text-red-500 text-xs mt-2 flex items-center gap-1"><AlertCircle size={12} /> {loginError}</p>}
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl shadow-lg shadow-indigo-100 transition-all flex items-center justify-center gap-2"
+            >
+              <CheckCircle size={20} />
+              Masuk
+            </button>
+          </form>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans">
