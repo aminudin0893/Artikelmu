@@ -73,7 +73,7 @@ export default function App() {
     const styleConfig = WRITING_STYLES.find(s => s.id === selectedStyleId);
     if (!styleConfig) return;
 
-    const userPrompt = `Buatkan tulisan berdasarkan informasi/fakta berikut:\n\n${topic}\n\nInstruksi Penting:\n1. Tuliskan tepat sebanyak ${paragraphs} paragraf (tidak termasuk judul utama).\n2. Berikan Judul Utama di baris paling atas menggunakan format Header Markdown (misal: # Judul Tulisan).\n3. Pastikan gaya penulisannya sangat kental dengan gaya yang diminta.\n4. Gunakan tata bahasa Indonesia yang baik, benar, dan sesuai dengan kaidah EYD (Ejaan Yang Disempurnakan) yang terbaru.\n5. Pastikan struktur paragraf jelas dan mengalir secara logis.\n6. Setiap awal paragraf harus menjorok ke dalam (indentasi) seperti format surat atau buku resmi.\n7. Pisahkan setiap paragraf dengan DUA baris baru (double newline) agar terbaca sebagai paragraf yang terpisah dalam format Markdown.`;
+    const userPrompt = `Buatkan tulisan berdasarkan informasi/fakta berikut:\n\n${topic}\n\nInstruksi Penting:\n1. Tuliskan tepat sebanyak ${paragraphs} paragraf (tidak termasuk judul utama).\n2. Berikan Judul Utama di baris paling atas menggunakan format Header Markdown (misal: # Judul Tulisan).\n3. Pastikan gaya penulisannya sangat kental dengan gaya yang diminta.\n4. Gunakan tata bahasa Indonesia yang baik, benar, dan sesuai dengan kaidah EYD (Ejaan Yang Disempurnakan) yang terbaru.\n5. Pastikan struktur paragraf jelas dan mengalir secara logis.\n6. Pisahkan setiap paragraf dengan DUA baris baru (double newline) agar terbaca sebagai paragraf yang terpisah dalam format Markdown.`;
     const systemPrompt = styleConfig.prompt;
 
     try {
@@ -117,13 +117,16 @@ export default function App() {
   const handleCopy = async () => {
     if (!result) return;
     try {
+      // Clean text from &nbsp; and leading spaces from each paragraph to ensure clean paste
+      const finalResult = result.replace(/&nbsp;|\u00A0/g, ' ').replace(/^\s+/gm, '');
+      
       // Primary method: navigator.clipboard
       if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(result);
+        await navigator.clipboard.writeText(finalResult);
       } else {
         // Fallback method: textarea
         const textArea = document.createElement("textarea");
-        textArea.value = result;
+        textArea.value = finalResult;
         textArea.style.position = "fixed";
         textArea.style.left = "-9999px";
         textArea.style.top = "0";
@@ -164,7 +167,7 @@ export default function App() {
               <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
                 <Pen size={20} />
               </div>
-              <h1 className="text-xl font-bold text-slate-900 tracking-tight">AI Writer Pro</h1>
+              <h1 className="text-xl font-bold text-slate-900 tracking-tight">ArtikelMu</h1>
             </div>
           </div>
         </div>
@@ -545,9 +548,7 @@ export default function App() {
         <div className="prose prose-slate prose-lg max-w-none" style={{ textAlign: textAlign }}>
           <ReactMarkdown>{result}</ReactMarkdown>
         </div>
-        <div className="mt-10 pt-4 border-t border-slate-200 text-center text-xs text-slate-400 font-sans">
-          Dihasilkan oleh AI Writer Pro — Dokumen ini dibuat menggunakan Kecerdasan Buatan (AI)
-        </div>
+       
       </div>
 
       <style>{`
