@@ -48,6 +48,7 @@ export default function App() {
   const [error, setError] = useState('');
   const [isCopied, setIsCopied] = useState(false);
   const [textAlign, setTextAlign] = useState<'left' | 'center' | 'right' | 'justify'>('left');
+  const [customPrompt, setCustomPrompt] = useState('');
 
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -94,7 +95,11 @@ export default function App() {
     if (!styleConfig) return;
 
     const userPrompt = `Buatkan tulisan berdasarkan informasi/fakta berikut:\n\n${topic}\n\nInstruksi Penting:\n1. Tuliskan tepat sebanyak ${paragraphs} paragraf (tidak termasuk judul utama).\n2. Berikan Judul Utama di baris paling atas menggunakan format Header Markdown (misal: # Judul Tulisan).\n3. Pastikan gaya penulisannya sangat kental dengan gaya yang diminta.\n4. Gunakan tata bahasa Indonesia yang baik, benar, dan sesuai dengan kaidah EYD (Ejaan Yang Disempurnakan) yang terbaru.\n5. Pastikan struktur paragraf jelas dan mengalir secara logis.\n6. Pisahkan setiap paragraf dengan tepat SATU baris kosong (dua kali pindah baris) agar sesuai standar EYD dan Markdown.`;
-    const systemPrompt = styleConfig.prompt;
+    
+    let systemPrompt = styleConfig.prompt;
+    if (selectedStyleId === 'ceramah_kustom' && customPrompt.trim()) {
+      systemPrompt = `Anda adalah seorang penceramah/ustadz. ${customPrompt}. Tuliskan naskah ceramah berlandaskan Al-Quran dan Sunnah.`;
+    }
 
     try {
       const ai = new GoogleGenAI({ apiKey: apiKey || process.env.GEMINI_API_KEY || '' });
@@ -343,9 +348,33 @@ export default function App() {
                       <option value="Esai">Esai Akademik</option>
                       <option value="Khusus">Hiburan & Khusus</option>
                       <option value="Humas">Humas / Lembaga</option>
+                      <option value="Ceramah">Ceramah / Religi</option>
                     </select>
                   </div>
                 </div>
+
+                {/* Custom Prompt for Ceramah */}
+                {selectedStyleId === 'ceramah_kustom' && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="space-y-3"
+                  >
+                    <label className="flex items-center gap-2.5 text-sm font-bold text-slate-700 ml-1">
+                      <div className="p-1.5 bg-indigo-100 rounded-lg text-indigo-600">
+                        <Pen size={14} />
+                      </div>
+                      Instruksi Gaya Kustom
+                    </label>
+                    <textarea 
+                      value={customPrompt}
+                      onChange={(e) => setCustomPrompt(e.target.value)}
+                      rows={3} 
+                      className="w-full p-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all resize-none text-slate-800 leading-relaxed placeholder:text-slate-400 text-sm" 
+                      placeholder="Contoh: Gaya ceramah yang tegas namun menyentuh hati, fokus pada adab kepada orang tua..."
+                    />
+                  </motion.div>
+                )}
 
                 {/* Style Selection */}
                 <div className="space-y-4">
@@ -438,14 +467,14 @@ export default function App() {
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.95 }}
-                      className="flex items-center gap-3 sm:gap-4"
+                      className="flex flex-wrap items-center justify-end gap-2 sm:gap-4"
                     >
                       {/* Alignment Controls */}
-                      <div className="hidden sm:flex items-center bg-slate-100/80 p-1 rounded-xl border border-slate-200/60">
+                      <div className="flex items-center bg-slate-100/80 p-0.5 sm:p-1 rounded-xl border border-slate-200/60">
                         <button 
                           onClick={() => setTextAlign('left')}
                           className={cn(
-                            "p-2 rounded-lg transition-all",
+                            "p-1.5 sm:p-2 rounded-lg transition-all",
                             textAlign === 'left' ? "bg-white text-indigo-600 shadow-sm" : "text-slate-400 hover:text-slate-600"
                           )}
                           title="Rata Kiri"
@@ -455,7 +484,7 @@ export default function App() {
                         <button 
                           onClick={() => setTextAlign('center')}
                           className={cn(
-                            "p-2 rounded-lg transition-all",
+                            "p-1.5 sm:p-2 rounded-lg transition-all",
                             textAlign === 'center' ? "bg-white text-indigo-600 shadow-sm" : "text-slate-400 hover:text-slate-600"
                           )}
                           title="Rata Tengah"
@@ -465,7 +494,7 @@ export default function App() {
                         <button 
                           onClick={() => setTextAlign('right')}
                           className={cn(
-                            "p-2 rounded-lg transition-all",
+                            "p-1.5 sm:p-2 rounded-lg transition-all",
                             textAlign === 'right' ? "bg-white text-indigo-600 shadow-sm" : "text-slate-400 hover:text-slate-600"
                           )}
                           title="Rata Kanan"
@@ -475,7 +504,7 @@ export default function App() {
                         <button 
                           onClick={() => setTextAlign('justify')}
                           className={cn(
-                            "p-2 rounded-lg transition-all",
+                            "p-1.5 sm:p-2 rounded-lg transition-all",
                             textAlign === 'justify' ? "bg-white text-indigo-600 shadow-sm" : "text-slate-400 hover:text-slate-600"
                           )}
                           title="Rata Kiri Kanan"
@@ -487,19 +516,19 @@ export default function App() {
                       <div className="flex items-center gap-2">
                         <button 
                           onClick={handleCopy}
-                          className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-all shadow-sm active:scale-95"
+                          className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-all shadow-sm active:scale-95"
                           title="Salin ke Clipboard"
                         >
                           {isCopied ? <CheckCircle size={18} className="text-green-600" /> : <Copy size={18} />}
-                          <span className={cn("hidden sm:inline", isCopied ? "text-green-600" : "")}>{isCopied ? 'Tersalin' : 'Salin'}</span>
+                          <span className={cn("hidden xs:inline sm:inline", isCopied ? "text-green-600" : "")}>{isCopied ? 'Tersalin' : 'Salin'}</span>
                         </button>
                         <button 
                           onClick={handlePrint}
-                          className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 active:scale-95"
+                          className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-indigo-600 text-white rounded-xl text-xs sm:text-sm font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 active:scale-95"
                           title="Cetak Artikel"
                         >
                           <Printer size={18} />
-                          <span className="hidden sm:inline">Cetak</span>
+                          <span className="hidden xs:inline sm:inline">Cetak</span>
                         </button>
                       </div>
                     </motion.div>

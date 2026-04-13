@@ -1,6 +1,6 @@
 export interface WritingStyle {
   id: string;
-  category: 'Jurnalistik' | 'Esai' | 'Khusus' | 'Humas';
+  category: 'Jurnalistik' | 'Esai' | 'Khusus' | 'Humas' | 'Ceramah';
   name: string;
   desc: string;
   prompt: string;
@@ -124,7 +124,7 @@ export const WRITING_STYLES: WritingStyle[] = [
     category: 'Humas',
     name: 'Teks Sambutan',
     desc: 'Pidato resmi pimpinan lembaga.',
-    prompt: 'Anda adalah penulis pidato pimpinan. Tuliskan teks sambutan resmi untuk sebuah acara. Gunakan bahasa yang menginspirasi, formal, dan penuh apresiasi.',
+    prompt: 'Anda adalah penulis pidato pimpinan. Tuliskan teks sambutan resmi untuk sebuah acara. Gunakan bahasa yang menginspirasi, formal, and penuh apresiasi.',
   },
   {
     id: 'laporan_publik',
@@ -132,5 +132,40 @@ export const WRITING_STYLES: WritingStyle[] = [
     name: 'Laporan Publik',
     desc: 'Penyampaian capaian ke masyarakat.',
     prompt: 'Anda adalah tim komunikasi publik. Tuliskan narasi laporan capaian atau kegiatan lembaga kepada masyarakat. Gunakan bahasa yang transparan, akuntabel, dan positif.',
+  },
+  {
+    id: 'berita_sekolah',
+    category: 'Humas',
+    name: 'Berita Website Sekolah',
+    desc: 'Berita kegiatan sekolah yang menarik.',
+    prompt: 'Anda adalah admin website sekolah. Tuliskan berita kegiatan sekolah yang menarik, informatif, dan membanggakan. Gunakan bahasa yang ramah namun tetap sopan dan edukatif.',
+  },
+  {
+    id: 'ceramah_umum',
+    category: 'Ceramah',
+    name: 'Ceramah Umum',
+    desc: 'Nasihat bijak sesuai Al-Quran & Sunnah.',
+    prompt: 'Anda adalah seorang ustadz/penceramah. Tuliskan naskah ceramah yang menyejukkan hati, berlandaskan dalil Al-Quran dan Hadits Sunnah yang shahih. Gunakan bahasa yang santun, mengajak pada kebaikan, dan mudah dipahami.',
+  },
+  {
+    id: 'khutbah_jumat',
+    category: 'Ceramah',
+    name: 'Khutbah Jumat',
+    desc: 'Struktur khutbah resmi & padat.',
+    prompt: 'Anda adalah seorang khatib. Tuliskan naskah khutbah Jumat yang terstruktur (pembukaan, isi, penutup). Fokus pada peningkatan takwa, berlandaskan Al-Quran dan Sunnah. Nada tegas namun penuh hikmah.',
+  },
+  {
+    id: 'kultum',
+    category: 'Ceramah',
+    name: 'Kultum (7 Menit)',
+    desc: 'Singkat, padat, dan inspiratif.',
+    prompt: 'Anda adalah seorang da\'i. Tuliskan materi kultum singkat namun sangat berkesan. Ambil satu poin utama dari Al-Quran atau Sunnah dan jelaskan aplikasinya dalam kehidupan sehari-hari.',
+  },
+  {
+    id: 'ceramah_kustom',
+    category: 'Ceramah',
+    name: 'Gaya Kustom',
+    desc: 'Tentukan sendiri gaya ceramah Anda.',
+    prompt: 'CUSTOM_PROMPT',
   },
 ];
