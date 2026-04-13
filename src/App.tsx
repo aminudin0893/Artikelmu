@@ -303,7 +303,7 @@ export default function App() {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   {/* Paragraph Count */}
                   <div className="space-y-3">
                     <label className="flex items-center gap-2.5 text-sm font-bold text-slate-700 ml-1">
@@ -342,6 +342,7 @@ export default function App() {
                       <option value="Jurnalistik">Jurnalistik</option>
                       <option value="Esai">Esai Akademik</option>
                       <option value="Khusus">Hiburan & Khusus</option>
+                      <option value="Humas">Humas / Lembaga</option>
                     </select>
                   </div>
                 </div>
@@ -415,7 +416,7 @@ export default function App() {
           </div>
 
           {/* Right Panel */}
-          <div className="lg:col-span-7 h-[calc(100vh-10rem)] min-h-[650px]">
+          <div className="lg:col-span-7 lg:h-[calc(100vh-10rem)] h-auto min-h-[600px] lg:min-h-[650px]">
             <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200/50 border border-slate-200/60 h-full flex flex-col relative overflow-hidden">
               
               {/* Header Panel Output */}

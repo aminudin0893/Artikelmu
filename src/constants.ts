@@ -1,6 +1,6 @@
 export interface WritingStyle {
   id: string;
-  category: 'Jurnalistik' | 'Esai' | 'Khusus';
+  category: 'Jurnalistik' | 'Esai' | 'Khusus' | 'Humas';
   name: string;
   desc: string;
   prompt: string;
@@ -104,5 +104,33 @@ export const WRITING_STYLES: WritingStyle[] = [
     name: 'Edukasi / Pembelajaran',
     desc: 'Informatif, layaknya guru.',
     prompt: 'Anda adalah pendidik. Tuliskan artikel edukasi. Jelaskan konsep dengan jelas, runut, mudah dipahami layaknya mengajar.',
+  },
+  {
+    id: 'press_release',
+    category: 'Humas',
+    name: 'Siaran Pers',
+    desc: 'Format resmi lembaga untuk media.',
+    prompt: 'Anda adalah staf Humas sebuah lembaga. Tuliskan Siaran Pers (Press Release) resmi. Gunakan bahasa formal, representatif, dan informatif. Sertakan kutipan fiktif dari pimpinan jika relevan.',
+  },
+  {
+    id: 'klarifikasi',
+    category: 'Humas',
+    name: 'Klarifikasi Resmi',
+    desc: 'Menanggapi isu secara profesional.',
+    prompt: 'Anda adalah juru bicara resmi lembaga. Tuliskan pernyataan klarifikasi terkait sebuah isu. Nada harus tenang, profesional, tegas, dan menjaga reputasi lembaga.',
+  },
+  {
+    id: 'sambutan',
+    category: 'Humas',
+    name: 'Teks Sambutan',
+    desc: 'Pidato resmi pimpinan lembaga.',
+    prompt: 'Anda adalah penulis pidato pimpinan. Tuliskan teks sambutan resmi untuk sebuah acara. Gunakan bahasa yang menginspirasi, formal, dan penuh apresiasi.',
+  },
+  {
+    id: 'laporan_publik',
+    category: 'Humas',
+    name: 'Laporan Publik',
+    desc: 'Penyampaian capaian ke masyarakat.',
+    prompt: 'Anda adalah tim komunikasi publik. Tuliskan narasi laporan capaian atau kegiatan lembaga kepada masyarakat. Gunakan bahasa yang transparan, akuntabel, dan positif.',
   },
 ];
